@@ -32,8 +32,8 @@ public class Simulation {
 	public final static double PACKET_INITIALIZATION_DESIRED_VOI_FACTOR = .5;
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public final static int TOUR_TYPES = 4 + (X_DIM * Y_DIM);
-	public final static int SAMPLES_PER_TOUR = 1;
+	public final static int TOUR_TYPES = 3 + (X_DIM * Y_DIM);
+	public final static int SAMPLES_PER_TOUR = 10;
 	public final static int TOTAL_SAMPLES = SAMPLES_PER_TOUR * TOUR_TYPES;
 	public static ArrayList<Tour> AllTours = new ArrayList<Tour>();
 	public double[][] results = new double[TOUR_TYPES][1];
@@ -78,22 +78,16 @@ public class Simulation {
 	public void InitializePopulation(final SimulationMap MyMap, final double LastPacketTS) {
 		int NumResurfaceStops = 0;
 		for (int i = 0; i < TOUR_TYPES; i++) {
-			Tour T = new Tour("Resurface Randomly 1", NUM_OF_AUVS, NUM_OF_NODES, MyMap, DISTANCE_TYPE,
-					NumResurfaceStops);
-			;
+			Tour T = new Tour("Resurface Randomly", NUM_OF_AUVS, NUM_OF_NODES, MyMap, DISTANCE_TYPE, NumResurfaceStops);
 			if (i % TOUR_TYPES == 0) {
-				T = new Tour("Resurface Randomly 1", NUM_OF_AUVS, NUM_OF_NODES, MyMap, DISTANCE_TYPE,
-						NumResurfaceStops);
+				T = new Tour("Resurface Randomly", NUM_OF_AUVS, NUM_OF_NODES, MyMap, DISTANCE_TYPE, NumResurfaceStops);
 			} else if (i % TOUR_TYPES == 1) {
-				T = new Tour("Resurface Randomly 2", NUM_OF_AUVS, NUM_OF_NODES, MyMap, DISTANCE_TYPE,
-						NumResurfaceStops);
-			} else if (i % TOUR_TYPES == 2) {
 				T = new Tour("Resurface At Every Node", NUM_OF_AUVS, NUM_OF_NODES, MyMap, DISTANCE_TYPE,
 						NumResurfaceStops);
-			} else if (i % TOUR_TYPES == 3) {
+			} else if (i % TOUR_TYPES == 2) {
 				T = new Tour("Resurface At Last Node", NUM_OF_AUVS, NUM_OF_NODES, MyMap, DISTANCE_TYPE,
 						NumResurfaceStops);
-			} else if (i % TOUR_TYPES >= 4) {
+			} else if (i % TOUR_TYPES >= 2) {
 				NumResurfaceStops++;
 				T = new Tour("Resurface After K-Nodes", NUM_OF_AUVS, NUM_OF_NODES, MyMap, DISTANCE_TYPE,
 						NumResurfaceStops);
@@ -147,14 +141,7 @@ public class Simulation {
 			for (int Xloc = 0; Xloc < x; Xloc++) {
 				for (int Yloc = 0; Yloc < y; Yloc++) {
 					TS = 0;
-					final int RandNumOfPackets = rand.nextInt(EXPECTED_MAX_PACKETS_AT_NODE) + 1; // Each
-					// node
-					// should
-					// have
-					// at
-					// least
-					// 1
-					// packet
+					final int RandNumOfPackets = rand.nextInt(EXPECTED_MAX_PACKETS_AT_NODE) + 1;
 					for (int i = 0; i < RandNumOfPackets; i++) {
 						TS += 10;
 						final Packet NewPacket = new Packet("Normal", Magnitude, Decay, LatestTS);

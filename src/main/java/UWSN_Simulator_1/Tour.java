@@ -36,13 +36,8 @@ public class Tour implements Comparable<Tour> {
 			this.DistanceTravelledForTour.add(i, 0.0);
 			this.ExecutionTimeOfTour.add(i, 0.0);
 		}
-		if (InitType == "Resurface Randomly 1") {
+		if (InitType == "Resurface Randomly") {
 			this.NameOfPlanner = "RR1";
-			this.LawnMower(myMap);
-			this.InsertResurfaceStops(this.NameOfPlanner, NumResurfaceStops);
-		}
-		if (InitType == "Resurface Randomly 2") {
-			this.NameOfPlanner = "RR2";
 			this.LawnMower(myMap);
 			this.InsertResurfaceStops(this.NameOfPlanner, NumResurfaceStops);
 		}
@@ -82,26 +77,6 @@ public class Tour implements Comparable<Tour> {
 				}
 				if (x < this.NumOfNodes) {
 					this.theTour.get(y).add(z, NodeToBeAssigned);
-					x++;
-				} else {
-					this.theTour.get(y).add(z, -1);
-				}
-			}
-		}
-	}
-
-	private void Random() {
-		final ArrayList<Integer> NodesPool = new ArrayList<Integer>();
-		for (int i = 0; i < this.NumOfNodes; i++) {
-			NodesPool.add(i, i);
-		}
-		int x = 0;
-		for (int y = 0; y < this.NumOfAUVs; y++) {
-			for (int z = 0; z < this.AUVTourMaxLength; z++) {
-				if (x < this.NumOfNodes) {
-					final int Node = rand.nextInt(NodesPool.size());
-					this.theTour.get(y).add(z, NodesPool.get(Node));
-					NodesPool.remove(Node);
 					x++;
 				} else {
 					this.theTour.get(y).add(z, -1);
