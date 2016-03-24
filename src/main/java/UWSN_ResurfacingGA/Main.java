@@ -1,5 +1,11 @@
 package UWSN_ResurfacingGA;
 
+/**
+ * This is the main file that is used by the GAResurface
+ * 
+ * @author Sehar Butt
+ *
+ */
 public class Main {
 
 	public static void main(final String[] args) {
