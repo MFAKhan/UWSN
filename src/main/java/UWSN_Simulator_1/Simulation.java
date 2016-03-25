@@ -32,7 +32,7 @@ public class Simulation {
 	public final static double PACKET_INITIALIZATION_DESIRED_VOI_FACTOR = .5;
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public final static int TOUR_TYPES = 3 + (X_DIM * Y_DIM);
+	public final static int TOUR_TYPES = 3 + ((X_DIM * Y_DIM) + 1);
 	public final static int SAMPLES_PER_TOUR = 10;
 	public final static int TOTAL_SAMPLES = SAMPLES_PER_TOUR * TOUR_TYPES;
 	public static ArrayList<Tour> AllTours = new ArrayList<Tour>();
@@ -76,7 +76,7 @@ public class Simulation {
 	}
 
 	public void InitializePopulation(final SimulationMap MyMap, final double LastPacketTS) {
-		int NumResurfaceStops = 0;
+		int NumResurfaceStops = -1;
 		for (int i = 0; i < TOUR_TYPES; i++) {
 			Tour T = new Tour("Resurface Randomly", NUM_OF_AUVS, NUM_OF_NODES, MyMap, DISTANCE_TYPE, NumResurfaceStops);
 			if (i % TOUR_TYPES == 0) {
@@ -200,7 +200,7 @@ public class Simulation {
 
 	void PrintAverages() {
 		System.out.println("\n\nTour Type\t\tAvg. VoI\t");
-		int ResurfaceStops = 0;
+		int ResurfaceStops = -1;
 		for (int i = 0; i < TOUR_TYPES; i++) {
 			if (i % TOUR_TYPES == 0) {
 				System.out.print("Random 1\t");

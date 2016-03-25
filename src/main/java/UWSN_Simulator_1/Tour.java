@@ -37,7 +37,7 @@ public class Tour implements Comparable<Tour> {
 			this.ExecutionTimeOfTour.add(i, 0.0);
 		}
 		if (InitType == "Resurface Randomly") {
-			this.NameOfPlanner = "RR1";
+			this.NameOfPlanner = "RR";
 			this.LawnMower(myMap);
 			this.InsertResurfaceStops(this.NameOfPlanner, NumResurfaceStops);
 		}
@@ -86,13 +86,13 @@ public class Tour implements Comparable<Tour> {
 	}
 
 	private void InsertResurfaceStops(final String TypeOfInsertion, final int NodeVisitsBetweenStops) {
-		if (TypeOfInsertion == "RR1" || TypeOfInsertion == "RR2") {
+		if (TypeOfInsertion == "RR") {
 			for (int y = 0; y < this.NumOfAUVs; y++) {
 				final int InitialNodesInTour = this.theTour.get(y).size();
 				for (int z = 0; z < this.theTour.get(y).size(); z++) {
 					// Generate Random Number
 					final int num = rand.nextInt(InitialNodesInTour);
-					if (num > InitialNodesInTour / 2) {
+					if ((num > InitialNodesInTour / 2) && this.theTour.get(y).get(z) != -2) {
 						this.theTour.get(y).add(z, -2); // Resurface Stop
 														// Indicator : -2
 						z++;
@@ -108,7 +108,7 @@ public class Tour implements Comparable<Tour> {
 		if (TypeOfInsertion == "REN") {
 			for (int y = 0; y < this.NumOfAUVs; y++) {
 				final int InsertIndex = 1;
-				for (int z = InsertIndex - 1; z < this.theTour.get(y).size(); z += InsertIndex) {
+				for (int z = InsertIndex; z < this.theTour.get(y).size(); z += InsertIndex) {
 					z++;
 					this.theTour.get(y).add(z, -2); // Resurface Stop Indicator
 													// : -2
@@ -120,7 +120,7 @@ public class Tour implements Comparable<Tour> {
 				}
 			}
 		}
-		if (TypeOfInsertion == "RLN") {
+		if ((TypeOfInsertion == "RLN") || ((TypeOfInsertion == "RKN") && (NodeVisitsBetweenStops == 0))) {
 			for (int y = 0; y < this.NumOfAUVs; y++) {
 				// Append resurface stop in the end if it is not appended by the
 				// above loop
@@ -129,13 +129,12 @@ public class Tour implements Comparable<Tour> {
 				}
 			}
 		}
-		if (TypeOfInsertion == "RKN") {
+		if ((TypeOfInsertion == "RKN") && (NodeVisitsBetweenStops != 0)) {
 			for (int y = 0; y < this.NumOfAUVs; y++) {
 				final int InsertIndex = NodeVisitsBetweenStops;
-				for (int z = InsertIndex - 1; z < this.theTour.get(y).size(); z += InsertIndex) {
+				for (int z = InsertIndex; z < this.theTour.get(y).size(); z += InsertIndex) {
 					z++;
-					this.theTour.get(y).add(z, -2); // Resurface Stop Indicator
-													// : -2
+					this.theTour.get(y).add(z, -2);
 				}
 				// Append resurface stop in the end if it is not appended by the
 				// above loop

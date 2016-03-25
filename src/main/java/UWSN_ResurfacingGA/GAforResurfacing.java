@@ -18,9 +18,9 @@ public class GAforResurfacing {
 
 		// Evolve our population until we reach an optimum solution
 		int generationCount = 0;
-		while (generationCount < 25) {
+		while (generationCount < 50) {
 			generationCount++;
-			//myPop.printPopulation();
+			// myPop.printPopulation();
 			System.out.println("Generation: " + generationCount + " Gene: " + myPop.getFittest().getGenesConverted()
 					+ " Fittest: " + myPop.getFittest().getFitness());
 			myPop = Algorithm.evolvePopulation(myPop);
@@ -28,7 +28,8 @@ public class GAforResurfacing {
 		System.out.println("Solution found!");
 		System.out.println("Generation: " + generationCount);
 		System.out.println("Genes:");
-		//System.out.println(myPop.getFittest() + " = " + myPop.getFittest().getGenesConverted());
+		// System.out.println(myPop.getFittest() + " = " +
+		// myPop.getFittest().getGenesConverted());
 
 	}
 
