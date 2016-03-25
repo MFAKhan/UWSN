@@ -2,49 +2,60 @@ package SimpleGA;
 
 public class Population {
 
-    Individual[] individuals;
+	Individual[] individuals;
 
-    /*
-     * Constructors
-     */
-    // Create a population
-    public Population(int populationSize, boolean initialize) {
-        individuals = new Individual[populationSize];
-        // Initialize population
-        if (initialize) {
-            // Loop and create individuals
-            for (int i = 0; i < size(); i++) {
-                Individual newIndividual = new Individual();
-                newIndividual.generateIndividual();
-                saveIndividual(i, newIndividual);
-            }
-        }
-    }
+	/*
+	 * Constructors
+	 */
+	// Create a population
+	public Population(final int populationSize, final boolean initialize) {
+		this.individuals = new Individual[populationSize];
+		// Initialize population
+		if (initialize) {
+			// Loop and create individuals
+			for (int i = 0; i < this.size(); i++) {
+				final Individual newIndividual = new Individual();
+				newIndividual.generateIndividual();
+				this.saveIndividual(i, newIndividual);
+			}
+		}
+	}
 
-    /* Getters */
-    public Individual getIndividual(int index) {
-        return individuals[index];
-    }
+	/* Getters */
+	public Individual getIndividual(final int index) {
+		return this.individuals[index];
+	}
 
-    public Individual getFittest() {
-        Individual fittest = individuals[0];
-        // Loop through individuals to find fittest
-        for (int i = 0; i < size(); i++) {
-            if (fittest.getFitness() <= getIndividual(i).getFitness()) {
-                fittest = getIndividual(i);
-            }
-        }
-        return fittest;
-    }
+	public Individual getFittest() {
+		Individual fittest = this.individuals[0];
+		// Loop through individuals to find fittest
+		for (int i = 0; i < this.size(); i++) {
+			if (fittest.getFitness() <= this.getIndividual(i).getFitness()) {
+				fittest = this.getIndividual(i);
+			}
+		}
+		return fittest;
+	}
 
-    /* Public methods */
-    // Get population size
-    public int size() {
-        return individuals.length;
-    }
+	/* Public methods */
+	// Get population size
+	public int size() {
+		return this.individuals.length;
+	}
 
-    // Save individual
-    public void saveIndividual(int index, Individual indiv) {
-        individuals[index] = indiv;
-    }
+	// Save individual
+	public void saveIndividual(final int index, final Individual indiv) {
+		this.individuals[index] = indiv;
+	}
+
+	public void printPopulation() {
+		for (int i = 0; i < this.individuals.length; i++) {
+			System.out.print(this.individuals[i].getGenesConverted());
+			System.out.print(" - ");
+			System.out.print(this.individuals[i].getFitness());
+			System.out.print("\n");
+		}
+		System.out.println();
+	}
+
 }
