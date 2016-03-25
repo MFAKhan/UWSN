@@ -39,8 +39,7 @@ public class FitnessCalc {
 	static double getFitness(final Individual individual) {
 		double fitness = 0;
 		// fitness = binaryToInteger(individual.getGeneString());
-		final ResurfacingSimulation R = new ResurfacingSimulation();
-		fitness = R.Run(binaryToInteger(individual.getGeneString()));
+		fitness = new ResurfacingSimulation().Run(binaryToInteger(individual.getGeneString()));
 		return fitness;
 	}
 

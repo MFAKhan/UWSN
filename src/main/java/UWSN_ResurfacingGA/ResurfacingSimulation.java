@@ -41,7 +41,7 @@ public class ResurfacingSimulation {
 	public final static int TOUR_TYPES = 1;
 	public final static int SAMPLES_PER_TOUR = 10;
 	public final static int TOTAL_SAMPLES = SAMPLES_PER_TOUR * TOUR_TYPES;
-	public static ArrayList<Tour> AllTours = new ArrayList<Tour>();
+	public ArrayList<Tour> AllTours = new ArrayList<Tour>();
 	public double[][] results = new double[TOUR_TYPES][1];
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,13 +89,9 @@ public class ResurfacingSimulation {
 		final VoIEvaluation X = new VoIEvaluation();
 		T.setVoIAccumulatedByTour(X.VoIAllAUVTours(VoICalculationBasis, T, MyMap, LastPacketTS, AUV_SPEED,
 				DISTANCE_SCALE, DISTANCE_TYPE));
-		AllTours.add(T);
+		this.AllTours.add(T);
 		// AllTours.get(i).PrintTour();
 		T.getVoIAccumulatedByTour();
-	}
-
-	public static void ExterminatePopulation() {
-		AllTours.clear();
 	}
 
 	public static double IntializeNodePackets(final int x, final int y, final String Method, final SimulationMap M,
@@ -135,14 +131,8 @@ public class ResurfacingSimulation {
 			for (int Xloc = 0; Xloc < x; Xloc++) {
 				for (int Yloc = 0; Yloc < y; Yloc++) {
 					TS = 0;
-					final int RandNumOfPackets = rand.nextInt(EXPECTED_MAX_PACKETS_AT_NODE) + 1; // Each
-					// node
-					// should
-					// have
-					// at
-					// least
-					// 1
-					// packet
+					// Each node should have at least 1 packet
+					final int RandNumOfPackets = rand.nextInt(EXPECTED_MAX_PACKETS_AT_NODE) + 1;
 					for (int i = 0; i < RandNumOfPackets; i++) {
 						TS += 10;
 						final Packet NewPacket = new Packet("Normal", Magnitude, Decay, LatestTS);
@@ -191,7 +181,7 @@ public class ResurfacingSimulation {
 		}
 		// Summation
 		for (int i = 0; i < TOTAL_SAMPLES; i++) {
-			this.results[i % TOUR_TYPES][0] += AllTours.get(i).getVoIAccumulatedByTour();
+			this.results[i % TOUR_TYPES][0] += this.AllTours.get(i).getVoIAccumulatedByTour();
 		}
 		// Division
 		for (int i = 0; i < TOUR_TYPES; i++) {
