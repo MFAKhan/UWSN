@@ -20,7 +20,7 @@ public class Simulation {
 	public final static String DISTANCE_TYPE = "Euclidean";
 	public final static int NUM_OF_AUVS = 1;
 	public final static int X_DIM = 1; // No. of Nodes Horizontally in Mesh
-	public final static int Y_DIM = 100; // No. of Nodes Vertically in Mesh
+	public final static int Y_DIM = 10; // No. of Nodes Vertically in Mesh
 	public final static int NUM_OF_NODES = X_DIM * Y_DIM;
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -96,7 +96,7 @@ public class Simulation {
 			T.setVoIAccumulatedByTour(X.VoIAllAUVTours(VoICalculationBasis, T, MyMap, LastPacketTS, AUV_SPEED,
 					DISTANCE_SCALE, DISTANCE_TYPE));
 			AllTours.add(T);
-			// AllTours.get(i).PrintTour();
+			AllTours.get(i).PrintTour();
 		}
 	}
 

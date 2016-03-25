@@ -132,7 +132,7 @@ public class Tour implements Comparable<Tour> {
 		if ((TypeOfInsertion == "RKN") && (NodeVisitsBetweenStops != 0)) {
 			for (int y = 0; y < this.NumOfAUVs; y++) {
 				final int InsertIndex = NodeVisitsBetweenStops;
-				for (int z = InsertIndex; z < this.theTour.get(y).size(); z += InsertIndex) {
+				for (int z = InsertIndex - 1; z < this.theTour.get(y).size(); z += InsertIndex) {
 					z++;
 					this.theTour.get(y).add(z, -2);
 				}
