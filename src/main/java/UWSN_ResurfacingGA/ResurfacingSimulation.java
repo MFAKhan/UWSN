@@ -84,8 +84,9 @@ public class ResurfacingSimulation {
 
 	public void CreateAndEvaluateTour(final SimulationMap MyMap, final double LastPacketTS,
 			final int NumResurfaceStops) {
+		// add GA tour here
 		final Tour T = new Tour("Resurface After K-Nodes", NUM_OF_AUVS, NUM_OF_NODES, MyMap, DISTANCE_TYPE,
-				NumResurfaceStops);
+				NumResurfaceStops, null);
 		final VoIEvaluation X = new VoIEvaluation();
 		T.setVoIAccumulatedByTour(X.VoIAllAUVTours(VoICalculationBasis, T, MyMap, LastPacketTS, AUV_SPEED,
 				DISTANCE_SCALE, DISTANCE_TYPE));
@@ -170,7 +171,7 @@ public class ResurfacingSimulation {
 		final double TimeForAverageTourLength = M.AverageTourLength(DistanceType) / A.AUVvelocity;
 		Decay = Math.log((DesiredVoIFactor * Magnitude) / Magnitude) * -(1 / (TimeForAverageTourLength + OffsetTime));
 
-		return Decay * 100;
+		return Decay;
 	}
 
 	void AnalyzeExperiment() {

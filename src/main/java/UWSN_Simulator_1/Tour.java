@@ -3,6 +3,8 @@ package UWSN_Simulator_1;
 import java.util.ArrayList;
 import java.util.Random;
 
+import GA_UWSN.GeneticAlgorithms;
+
 public class Tour implements Comparable<Tour> {
 
 	public String NameOfPlanner;
@@ -24,7 +26,8 @@ public class Tour implements Comparable<Tour> {
 	private static Random rand = new Random();
 
 	public Tour(final String InitType, final int AUVs, final int Nodes, final SimulationMap myMap,
-			final String DistanceType, final int NumResurfaceStops) {
+			final String DistanceType, final int NumResurfaceStops, final double Speed, final double DistanceScale,
+			final double TimeStamp, final ArrayList<Integer> aTour) {
 		this.NumOfAUVs = AUVs;
 		this.NumOfNodes = Nodes;
 		this.AUVTourMaxLength_1 = this.NumOfNodes / this.NumOfAUVs;
@@ -35,6 +38,10 @@ public class Tour implements Comparable<Tour> {
 			this.theTour.add(i, new ArrayList<Integer>());
 			this.DistanceTravelledForTour.add(i, 0.0);
 			this.ExecutionTimeOfTour.add(i, 0.0);
+		}
+		if (InitType == "Create From Input") {
+			this.NameOfPlanner = "CFI";
+			this.CreateTour(aTour);
 		}
 		if (InitType == "Resurface Randomly") {
 			this.NameOfPlanner = "RR";
@@ -55,6 +62,17 @@ public class Tour implements Comparable<Tour> {
 			this.NameOfPlanner = "RKN";
 			this.LawnMower(myMap);
 			this.InsertResurfaceStops(this.NameOfPlanner, NumResurfaceStops);
+		}
+		if (InitType == "Resurface Tour Using GA1") {
+			this.NameOfPlanner = "RGA1";
+			this.LawnMower(myMap);
+			this.RouteOptimizedByGA1(myMap, Nodes, AUVs, Speed, DistanceType, DistanceScale, TimeStamp);
+		}
+	}
+
+	private void CreateTour(final ArrayList<Integer> aTour) {
+		for (int z = 0; z < aTour.size(); z++) {
+			this.theTour.get(0).add(aTour.get(z));
 		}
 	}
 
@@ -84,6 +102,20 @@ public class Tour implements Comparable<Tour> {
 			}
 		}
 	}
+
+	private void RouteOptimizedByGA1(final SimulationMap Map, final int NumNodes, final int NumAUVs, final double Speed,
+			final String DistanceType, final double DistanceScale, final double TimeStamp) {
+		final GeneticAlgorithms G = new GeneticAlgorithms();
+		final int optimizedResurfacingStops = G.OptimizeRurfacingUsingGA1(Map, NumNodes, NumAUVs, Speed, DistanceType,
+				DistanceScale, TimeStamp);
+		this.InsertResurfaceStops("RKN", optimizedResurfacingStops);
+	}
+
+	// private void RouteOptimizedByGA2(final SimulationMap M, final int AUVs,
+	// final int Nodes, final SimulationMap myMap,
+	// final String distanceType) {
+	// final ArrayList<Integer> optimizedTour =
+	// }
 
 	private void InsertResurfaceStops(final String TypeOfInsertion, final int NodeVisitsBetweenStops) {
 		if (TypeOfInsertion == "RR") {

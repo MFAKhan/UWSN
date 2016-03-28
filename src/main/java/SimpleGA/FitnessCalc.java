@@ -1,7 +1,5 @@
 package SimpleGA;
 
-import UWSN_ResurfacingGA.ResurfacingSimulation;
-
 public class FitnessCalc {
 
 	static byte[] solution = new byte[7];
@@ -38,8 +36,7 @@ public class FitnessCalc {
 	// Calculate inidividuals fittness by comparing it to our candidate solution
 	static double getFitness(final Individual individual) {
 		double fitness = 0;
-		// fitness = binaryToInteger(individual.getGeneString());
-		fitness = new ResurfacingSimulation().Run(binaryToInteger(individual.getGeneString()));
+		fitness = binaryToInteger(individual.getGeneString());
 		return fitness;
 	}
 
