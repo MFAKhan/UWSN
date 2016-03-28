@@ -86,7 +86,7 @@ public class ResurfacingSimulation {
 			final int NumResurfaceStops) {
 		// add GA tour here
 		final Tour T = new Tour("Resurface After K-Nodes", NUM_OF_AUVS, NUM_OF_NODES, MyMap, DISTANCE_TYPE,
-				NumResurfaceStops, null);
+				NumResurfaceStops, AUV_SPEED, DISTANCE_SCALE, LastPacketTS, null);
 		final VoIEvaluation X = new VoIEvaluation();
 		T.setVoIAccumulatedByTour(X.VoIAllAUVTours(VoICalculationBasis, T, MyMap, LastPacketTS, AUV_SPEED,
 				DISTANCE_SCALE, DISTANCE_TYPE));

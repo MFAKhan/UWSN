@@ -68,9 +68,17 @@ public class Tour implements Comparable<Tour> {
 			this.LawnMower(myMap);
 			this.RouteOptimizedByGA1(myMap, Nodes, AUVs, Speed, DistanceType, DistanceScale, TimeStamp);
 		}
+		if (InitType == "Resurface Tour Using GA2") {
+			this.NameOfPlanner = "RGA2";
+			this.LawnMower(myMap);
+			this.RouteOptimizedByGA2(myMap, Nodes, AUVs, Speed, DistanceType, DistanceScale, TimeStamp,
+					this.theTour.get(0));
+		}
 	}
 
 	private void CreateTour(final ArrayList<Integer> aTour) {
+		this.theTour.clear();
+		this.theTour.add(new ArrayList<Integer>());
 		for (int z = 0; z < aTour.size(); z++) {
 			this.theTour.get(0).add(aTour.get(z));
 		}
@@ -111,11 +119,18 @@ public class Tour implements Comparable<Tour> {
 		this.InsertResurfaceStops("RKN", optimizedResurfacingStops);
 	}
 
-	// private void RouteOptimizedByGA2(final SimulationMap M, final int AUVs,
-	// final int Nodes, final SimulationMap myMap,
-	// final String distanceType) {
-	// final ArrayList<Integer> optimizedTour =
-	// }
+	private void RouteOptimizedByGA2(final SimulationMap Map, final int NumNodes, final int NumAUVs, final double Speed,
+			final String DistanceType, final double DistanceScale, final double TimeStamp, final ArrayList<Integer> T) {
+		final GeneticAlgorithms G = new GeneticAlgorithms();
+		final ArrayList<Integer> Tour = G.OptimizeRurfacingUsingGA2(Map, NumNodes, NumAUVs, Speed, DistanceType,
+				DistanceScale, TimeStamp, T);
+		for (int i = 0; i < Tour.size(); i++) {
+			if (Tour.get(i) == -3) {
+				Tour.remove(i);
+			}
+		}
+		this.CreateTour(Tour);
+	}
 
 	private void InsertResurfaceStops(final String TypeOfInsertion, final int NodeVisitsBetweenStops) {
 		if (TypeOfInsertion == "RR") {

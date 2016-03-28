@@ -79,20 +79,20 @@ public class Simulation {
 		int NumResurfaceStops = -1;
 		for (int i = 0; i < TOUR_TYPES; i++) {
 			Tour T = new Tour("Resurface Randomly", NUM_OF_AUVS, NUM_OF_NODES, MyMap, DISTANCE_TYPE, NumResurfaceStops,
-					null);
+					AUV_SPEED, DISTANCE_SCALE, LastPacketTS, null);
 			if (i % TOUR_TYPES == 0) {
 				T = new Tour("Resurface Randomly", NUM_OF_AUVS, NUM_OF_NODES, MyMap, DISTANCE_TYPE, NumResurfaceStops,
-						null);
+						AUV_SPEED, DISTANCE_SCALE, LastPacketTS, null);
 			} else if (i % TOUR_TYPES == 1) {
 				T = new Tour("Resurface At Every Node", NUM_OF_AUVS, NUM_OF_NODES, MyMap, DISTANCE_TYPE,
-						NumResurfaceStops, null);
+						NumResurfaceStops, AUV_SPEED, DISTANCE_SCALE, LastPacketTS, null);
 			} else if (i % TOUR_TYPES == 2) {
 				T = new Tour("Resurface At Last Node", NUM_OF_AUVS, NUM_OF_NODES, MyMap, DISTANCE_TYPE,
-						NumResurfaceStops, null);
+						NumResurfaceStops, AUV_SPEED, DISTANCE_SCALE, LastPacketTS, null);
 			} else if (i % TOUR_TYPES >= 2) {
 				NumResurfaceStops++;
 				T = new Tour("Resurface After K-Nodes", NUM_OF_AUVS, NUM_OF_NODES, MyMap, DISTANCE_TYPE,
-						NumResurfaceStops, null);
+						NumResurfaceStops, AUV_SPEED, DISTANCE_SCALE, LastPacketTS, null);
 			}
 			final VoIEvaluation X = new VoIEvaluation();
 			T.setVoIAccumulatedByTour(X.VoIAllAUVTours(VoICalculationBasis, T, MyMap, LastPacketTS, AUV_SPEED,

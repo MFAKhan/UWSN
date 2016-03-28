@@ -38,7 +38,7 @@ public class GAforResurfacing {
 	public final static double PACKET_INITIALIZATION_DESIRED_VOI_FACTOR = .5;
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public final static int TOUR_TYPES = NUM_OF_NODES + 1;
+	public final static int TOUR_TYPES = NUM_OF_NODES + 2;
 	public final static int SAMPLES_PER_TOUR = 10;
 	public final static int TOTAL_SAMPLES = SAMPLES_PER_TOUR * TOUR_TYPES;
 	public ArrayList<Tour> AllTours = new ArrayList<Tour>();
@@ -96,6 +96,12 @@ public class GAforResurfacing {
 			// T.getVoIAccumulatedByTour();
 		}
 		T = new Tour("Resurface Tour Using GA1", NUM_OF_AUVS, NUM_OF_NODES, MyMap, DISTANCE_TYPE, -1, AUV_SPEED,
+				DISTANCE_SCALE, LastPacketTS, null);
+		X = new VoIEvaluation();
+		T.setVoIAccumulatedByTour(X.VoIAllAUVTours(VoICalculationBasis, T, MyMap, LastPacketTS, AUV_SPEED,
+				DISTANCE_SCALE, DISTANCE_TYPE));
+		this.AllTours.add(T);
+		T = new Tour("Resurface Tour Using GA2", NUM_OF_AUVS, NUM_OF_NODES, MyMap, DISTANCE_TYPE, -1, AUV_SPEED,
 				DISTANCE_SCALE, LastPacketTS, null);
 		X = new VoIEvaluation();
 		T.setVoIAccumulatedByTour(X.VoIAllAUVTours(VoICalculationBasis, T, MyMap, LastPacketTS, AUV_SPEED,
