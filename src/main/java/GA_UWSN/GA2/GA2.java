@@ -11,7 +11,7 @@ public class GA2 {
 
 	public GA2(final SimulationMap Map, final int NumNodes, final int NumAUVs, final double Speed,
 			final String DistanceType, final double DistanceScale, final double TimeStamp, final ArrayList<Integer> T) {
-		GA2_Population myPop = new GA2_Population(100, true, NumNodes, T);
+		GA2_Population myPop = new GA2_Population(250, true, NumNodes, T);
 		int generationCount = 0;
 		while (generationCount < 100) {
 			generationCount++;

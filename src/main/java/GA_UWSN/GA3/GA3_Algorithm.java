@@ -11,6 +11,8 @@ public class GA3_Algorithm {
 	private static final double mutationRate = 0.015;
 	private static final int tournamentSize = 5;
 	private static final boolean elitism = true;
+	private static final boolean seeds = true;
+	private static final int numOfSeeds = 5;
 
 	/* Public methods */
 
@@ -18,7 +20,8 @@ public class GA3_Algorithm {
 	public static GA3_Population evolvePopulation(final GA3_Population pop, final SimulationMap Map, final int NumNodes,
 			final int NumAUVs, final double Speed, final String DistanceType, final double DistanceScale,
 			final double TimeStamp, final ArrayList<Integer> T) {
-		final GA3_Population newPopulation = new GA3_Population(pop.size(), false, NumNodes, T);
+		final GA3_Population newPopulation = new GA3_Population(pop.size(), false, Map, NumNodes, NumAUVs, Speed,
+				DistanceType, DistanceScale, TimeStamp, T, seeds, numOfSeeds);
 
 		// Keep our best individual
 		if (elitism) {
@@ -94,7 +97,8 @@ public class GA3_Algorithm {
 			final int NumNodes, final int NumAUVs, final double Speed, final String DistanceType,
 			final double DistanceScale, final double TimeStamp, final ArrayList<Integer> T) {
 		// Create a tournament population
-		final GA3_Population tournament = new GA3_Population(tournamentSize, false, NumNodes, T);
+		final GA3_Population tournament = new GA3_Population(tournamentSize, false, Map, NumNodes, NumAUVs, Speed,
+				DistanceType, DistanceScale, TimeStamp, T, false, 0);
 		// For each place in the tournament get a random individual
 		for (int i = 0; i < tournamentSize; i++) {
 			final int randomId = (int) (Math.random() * pop.size());

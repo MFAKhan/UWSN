@@ -11,8 +11,6 @@ public class GA3_Individual {
 
 	public GA3_Individual(final ArrayList<Integer> T) {
 
-		// Add good seeds
-
 		for (int i = 0; i < T.size(); i++) {
 			this.genes.add(T.get(i));
 			if ((Math.random() < 0.5) || (i == (T.size() - 1))) {
@@ -45,10 +43,12 @@ public class GA3_Individual {
 
 	public double getFitness(final SimulationMap Map, final int NumNodes, final int NumAUVs, final double Speed,
 			final String DistanceType, final double DistanceScale, final double TimeStamp) {
-		if (this.fitness == -1) {
-			this.fitness = GA3_Fitness.getFitness(this.genes, Map, NumNodes, NumAUVs, Speed, DistanceType,
-					DistanceScale, TimeStamp);
-		}
+		this.fitness = GA3_Fitness.getFitness(this.genes, Map, NumNodes, NumAUVs, Speed, DistanceType, DistanceScale,
+				TimeStamp);
+		return this.fitness;
+	}
+
+	public double getFitnessValue() {
 		return this.fitness;
 	}
 
@@ -58,4 +58,5 @@ public class GA3_Individual {
 		}
 		System.out.println();
 	}
+
 }

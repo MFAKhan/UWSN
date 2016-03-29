@@ -34,10 +34,10 @@ public class GA1_Individual {
 	}
 
 	public double getFitness(final SimulationMap Map, final int NumNodes, final int NumAUVs, final double Speed,
-			final String DistanceType, final double DistanceScale, final double TimeStamp) {
+			final String DistanceType, final double DistanceScale, final double TimeStamp, final boolean Reversal) {
 		if (this.fitness == -1) {
 			this.fitness = GA1_Fitness.getFitness(this.genes, Map, NumNodes, NumAUVs, Speed, DistanceType,
-					DistanceScale, TimeStamp);
+					DistanceScale, TimeStamp, Reversal);
 		}
 		return this.fitness;
 	}

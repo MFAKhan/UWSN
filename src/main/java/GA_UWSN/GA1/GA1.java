@@ -8,17 +8,17 @@ public class GA1 {
 	public double fitness;
 
 	public GA1(final SimulationMap Map, final int NumNodes, final int NumAUVs, final double Speed,
-			final String DistanceType, final double DistanceScale, final double TimeStamp) {
-		GA1_Fitness.setSolution(0, NumNodes);
-		GA1_Population myPop = new GA1_Population(30, true, NumNodes);
+			final String DistanceType, final double DistanceScale, final double TimeStamp, final boolean Reversal) {
+		GA1_Population myPop = new GA1_Population(100, true, NumNodes);
 		int generationCount = 0;
-		while (generationCount < 50) {
+		while (generationCount < 250) {
 			generationCount++;
 			myPop = GA1_Algorithm.evolvePopulation(myPop, Map, NumNodes, NumAUVs, Speed, DistanceType, DistanceScale,
-					TimeStamp);
+					TimeStamp, Reversal);
 		}
-		this.Best = myPop.getFittest(Map, NumNodes, NumAUVs, Speed, DistanceType, DistanceScale, TimeStamp);
-		this.fitness = this.Best.getFitness(Map, NumNodes, NumAUVs, Speed, DistanceType, DistanceScale, TimeStamp);
+		this.Best = myPop.getFittest(Map, NumNodes, NumAUVs, Speed, DistanceType, DistanceScale, TimeStamp, Reversal);
+		this.fitness = this.Best.getFitness(Map, NumNodes, NumAUVs, Speed, DistanceType, DistanceScale, TimeStamp,
+				Reversal);
 
 		// System.out.println(myPop.getFittest() + " = " +
 		// myPop.getFittest().getFitness());

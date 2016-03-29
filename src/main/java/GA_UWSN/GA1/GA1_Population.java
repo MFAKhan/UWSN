@@ -25,14 +25,14 @@ public class GA1_Population {
 	}
 
 	public GA1_Individual getFittest(final SimulationMap Map, final int NumNodes, final int NumAUVs, final double Speed,
-			final String DistanceType, final double DistanceScale, final double TimeStamp) {
+			final String DistanceType, final double DistanceScale, final double TimeStamp, final boolean Reversal) {
 		GA1_Individual fittest = this.individuals[0];
 		// Loop through individuals to find fittest
 		for (int i = 0; i < this.size(); i++) {
 			final double fittestFitness = fittest.getFitness(Map, NumNodes, NumAUVs, Speed, DistanceType, DistanceScale,
-					TimeStamp);
+					TimeStamp, Reversal);
 			final double toCompFitness = this.getIndividual(i).getFitness(Map, NumNodes, NumAUVs, Speed, DistanceType,
-					DistanceScale, TimeStamp);
+					DistanceScale, TimeStamp, Reversal);
 			if (fittestFitness <= toCompFitness) {
 				fittest = this.getIndividual(i);
 			}

@@ -11,7 +11,8 @@ public class GA3 {
 
 	public GA3(final SimulationMap Map, final int NumNodes, final int NumAUVs, final double Speed,
 			final String DistanceType, final double DistanceScale, final double TimeStamp, final ArrayList<Integer> T) {
-		GA3_Population myPop = new GA3_Population(100, true, NumNodes, T);
+		GA3_Population myPop = new GA3_Population(250, true, Map, NumNodes, NumAUVs, Speed, DistanceType, DistanceScale,
+				TimeStamp, T, true, 5);
 		int generationCount = 0;
 		while (generationCount < 100) {
 			generationCount++;

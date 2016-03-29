@@ -43,22 +43,29 @@ public class GA1_Fitness {
 
 	// Calculate inidividuals fittness by comparing it to our candidate solution
 	static double getFitness(final byte[] genes, final SimulationMap Map, final int NumNodes, final int NumAUVs,
-			final double Speed, final String DistanceType, final double DistanceScale, final double TimeStamp) {
+			final double Speed, final String DistanceType, final double DistanceScale, final double TimeStamp,
+			final boolean Reversal) {
 		double fitness = 0;
 		int NumResurfaceStops = binaryToInteger(genes);
 		if (NumResurfaceStops > NumNodes) {
 			NumResurfaceStops = NumNodes;
 		}
 		fitness = CreateAndEvaluateTour(NumResurfaceStops, Map, NumNodes, NumAUVs, Speed, DistanceType, DistanceScale,
-				TimeStamp);
+				TimeStamp, Reversal);
 		return fitness;
 	}
 
 	public static double CreateAndEvaluateTour(final int NumResurfaceStops, final SimulationMap Map, final int NumNodes,
 			final int NumAUVs, final double Speed, final String DistanceType, final double DistanceScale,
-			final double TimeStamp) {
-		final Tour T = new Tour("Resurface After K-Nodes", NumAUVs, NumNodes, Map, DistanceType, NumResurfaceStops,
-				Speed, DistanceScale, TimeStamp, null);
+			final double TimeStamp, final boolean Reversal) {
+		final Tour T;
+		if (Reversal == false) {
+			T = new Tour("Resurface After K-Nodes", NumAUVs, NumNodes, Map, DistanceType, NumResurfaceStops, Speed,
+					DistanceScale, TimeStamp, null);
+		} else {
+			T = new Tour("Reversal : Resurface After K-Nodes", NumAUVs, NumNodes, Map, DistanceType, NumResurfaceStops,
+					Speed, DistanceScale, TimeStamp, null);
+		}
 		final VoIEvaluation X = new VoIEvaluation();
 		T.setVoIAccumulatedByTour(X.VoIAllAUVTours("Transmit", T, Map, TimeStamp, Speed, DistanceScale, DistanceType));
 		return T.getVoIAccumulatedByTour();

@@ -15,13 +15,13 @@ public class GA1_Algorithm {
 	// Evolve a population
 	public static GA1_Population evolvePopulation(final GA1_Population pop, final SimulationMap Map, final int NumNodes,
 			final int NumAUVs, final double Speed, final String DistanceType, final double DistanceScale,
-			final double TimeStamp) {
+			final double TimeStamp, final boolean Reversal) {
 		final GA1_Population newPopulation = new GA1_Population(pop.size(), false, NumNodes);
 
 		// Keep our best individual
 		if (elitism) {
 			newPopulation.saveIndividual(0,
-					pop.getFittest(Map, NumNodes, NumAUVs, Speed, DistanceType, DistanceScale, TimeStamp));
+					pop.getFittest(Map, NumNodes, NumAUVs, Speed, DistanceType, DistanceScale, TimeStamp, Reversal));
 		}
 
 		// Crossover population
@@ -35,9 +35,9 @@ public class GA1_Algorithm {
 		// crossover
 		for (int i = elitismOffset; i < pop.size(); i++) {
 			final GA1_Individual indiv1 = tournamentSelection(pop, Map, NumNodes, NumAUVs, Speed, DistanceType,
-					DistanceScale, TimeStamp);
+					DistanceScale, TimeStamp, Reversal);
 			final GA1_Individual indiv2 = tournamentSelection(pop, Map, NumNodes, NumAUVs, Speed, DistanceType,
-					DistanceScale, TimeStamp);
+					DistanceScale, TimeStamp, Reversal);
 			final GA1_Individual newIndiv = crossover(indiv1, indiv2);
 			newPopulation.saveIndividual(i, newIndiv);
 		}
@@ -81,7 +81,7 @@ public class GA1_Algorithm {
 	// Select individuals for crossover
 	private static GA1_Individual tournamentSelection(final GA1_Population pop, final SimulationMap Map,
 			final int NumNodes, final int NumAUVs, final double Speed, final String DistanceType,
-			final double DistanceScale, final double TimeStamp) {
+			final double DistanceScale, final double TimeStamp, final boolean Reversal) {
 		// Create a tournament population
 		final GA1_Population tournament = new GA1_Population(tournamentSize, false, NumNodes);
 		// For each place in the tournament get a random individual
@@ -91,7 +91,7 @@ public class GA1_Algorithm {
 		}
 		// Get the fittest
 		final GA1_Individual fittest = tournament.getFittest(Map, NumNodes, NumAUVs, Speed, DistanceType, DistanceScale,
-				TimeStamp);
+				TimeStamp, Reversal);
 		return fittest;
 	}
 }

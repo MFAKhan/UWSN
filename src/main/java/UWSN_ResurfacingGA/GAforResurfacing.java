@@ -31,15 +31,15 @@ public class GAforResurfacing {
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Options Packet_Initializtion_Type : Equal, Symmetrical, Random
-	public final static String PACKET_INITIALIZATION_TYPE = "Equal";
-	public final static int EXPECTED_MAX_PACKETS_AT_NODE = 100;
+	public final static String PACKET_INITIALIZATION_TYPE = "Random";
+	public final static int EXPECTED_MAX_PACKETS_AT_NODE = 500;
 	public final static double PACKET_INITIALIZATION_MAGNITUDE = 1;
 	// VoI should be calibrated in accordance with number of packets
 	public final static double PACKET_INITIALIZATION_DESIRED_VOI_FACTOR = .5;
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public final static int TOUR_TYPES = NUM_OF_NODES + 2;
-	public final static int SAMPLES_PER_TOUR = 10;
+	public final static int TOUR_TYPES = (2 * NUM_OF_NODES) + 4;
+	public final static int SAMPLES_PER_TOUR = 1;
 	public final static int TOTAL_SAMPLES = SAMPLES_PER_TOUR * TOUR_TYPES;
 	public ArrayList<Tour> AllTours = new ArrayList<Tour>();
 	public double[][] results = new double[TOUR_TYPES][1];
@@ -92,8 +92,6 @@ public class GAforResurfacing {
 			T.setVoIAccumulatedByTour(X.VoIAllAUVTours(VoICalculationBasis, T, MyMap, LastPacketTS, AUV_SPEED,
 					DISTANCE_SCALE, DISTANCE_TYPE));
 			this.AllTours.add(T);
-			// this.AllTours.get(NumResurfaceStops).PrintTour();
-			// T.getVoIAccumulatedByTour();
 		}
 		T = new Tour("Resurface Tour Using GA1", NUM_OF_AUVS, NUM_OF_NODES, MyMap, DISTANCE_TYPE, -1, AUV_SPEED,
 				DISTANCE_SCALE, LastPacketTS, null);
@@ -101,7 +99,27 @@ public class GAforResurfacing {
 		T.setVoIAccumulatedByTour(X.VoIAllAUVTours(VoICalculationBasis, T, MyMap, LastPacketTS, AUV_SPEED,
 				DISTANCE_SCALE, DISTANCE_TYPE));
 		this.AllTours.add(T);
+		for (int NumResurfaceStops = 0; NumResurfaceStops < NUM_OF_NODES; NumResurfaceStops++) {
+			T = new Tour("Reversal : Resurface After K-Nodes", NUM_OF_AUVS, NUM_OF_NODES, MyMap, DISTANCE_TYPE,
+					NumResurfaceStops, AUV_SPEED, DISTANCE_SCALE, LastPacketTS, null);
+			X = new VoIEvaluation();
+			T.setVoIAccumulatedByTour(X.VoIAllAUVTours(VoICalculationBasis, T, MyMap, LastPacketTS, AUV_SPEED,
+					DISTANCE_SCALE, DISTANCE_TYPE));
+			this.AllTours.add(T);
+		}
+		T = new Tour("Reversal : Resurface Tour Using GA1", NUM_OF_AUVS, NUM_OF_NODES, MyMap, DISTANCE_TYPE, -1,
+				AUV_SPEED, DISTANCE_SCALE, LastPacketTS, null);
+		X = new VoIEvaluation();
+		T.setVoIAccumulatedByTour(X.VoIAllAUVTours(VoICalculationBasis, T, MyMap, LastPacketTS, AUV_SPEED,
+				DISTANCE_SCALE, DISTANCE_TYPE));
+		this.AllTours.add(T);
 		T = new Tour("Resurface Tour Using GA2", NUM_OF_AUVS, NUM_OF_NODES, MyMap, DISTANCE_TYPE, -1, AUV_SPEED,
+				DISTANCE_SCALE, LastPacketTS, null);
+		X = new VoIEvaluation();
+		T.setVoIAccumulatedByTour(X.VoIAllAUVTours(VoICalculationBasis, T, MyMap, LastPacketTS, AUV_SPEED,
+				DISTANCE_SCALE, DISTANCE_TYPE));
+		this.AllTours.add(T);
+		T = new Tour("Resurface Tour Using GA3", NUM_OF_AUVS, NUM_OF_NODES, MyMap, DISTANCE_TYPE, -1, AUV_SPEED,
 				DISTANCE_SCALE, LastPacketTS, null);
 		X = new VoIEvaluation();
 		T.setVoIAccumulatedByTour(X.VoIAllAUVTours(VoICalculationBasis, T, MyMap, LastPacketTS, AUV_SPEED,
@@ -207,7 +225,7 @@ public class GAforResurfacing {
 	void PrintAverages() {
 		System.out.println("Tour Type\tAvg. VoI\t");
 		for (int i = 0; i < TOUR_TYPES; i++) {
-			System.out.print(i + " Nodes\t\t");
+			System.out.print(this.AllTours.get(i).NameOfPlanner + "\t");
 			for (int j = 0; j < 1; j++) {
 				System.out.print(String.format("%8.2f", this.results[i][j]));
 			}

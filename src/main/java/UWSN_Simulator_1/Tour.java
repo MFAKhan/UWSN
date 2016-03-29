@@ -66,13 +66,29 @@ public class Tour implements Comparable<Tour> {
 		if (InitType == "Resurface Tour Using GA1") {
 			this.NameOfPlanner = "RGA1";
 			this.LawnMower(myMap);
-			this.RouteOptimizedByGA1(myMap, Nodes, AUVs, Speed, DistanceType, DistanceScale, TimeStamp);
+			this.RouteOptimizedByGA1(myMap, Nodes, AUVs, Speed, DistanceType, DistanceScale, TimeStamp, false);
+		}
+		if (InitType == "Reversal : Resurface Tour Using GA1") {
+			this.NameOfPlanner = "RGA1R";
+			this.LawnMower(myMap);
+			this.RouteOptimizedByGA1(myMap, Nodes, AUVs, Speed, DistanceType, DistanceScale, TimeStamp, true);
 		}
 		if (InitType == "Resurface Tour Using GA2") {
-			this.NameOfPlanner = "RGA2";
+			this.NameOfPlanner = "RGA2 - X";
 			this.LawnMower(myMap);
 			this.RouteOptimizedByGA2(myMap, Nodes, AUVs, Speed, DistanceType, DistanceScale, TimeStamp,
 					this.theTour.get(0));
+		}
+		if (InitType == "Resurface Tour Using GA3") {
+			this.NameOfPlanner = "RGA3 - X";
+			this.LawnMower(myMap);
+			this.RouteOptimizedByGA3(myMap, Nodes, AUVs, Speed, DistanceType, DistanceScale, TimeStamp,
+					this.theTour.get(0));
+		}
+		if (InitType == "Reversal : Resurface After K-Nodes") {
+			this.NameOfPlanner = "RKNR";
+			this.LawnMower(myMap);
+			this.InsertResurfaceStops(this.NameOfPlanner, NumResurfaceStops);
 		}
 	}
 
@@ -112,10 +128,10 @@ public class Tour implements Comparable<Tour> {
 	}
 
 	private void RouteOptimizedByGA1(final SimulationMap Map, final int NumNodes, final int NumAUVs, final double Speed,
-			final String DistanceType, final double DistanceScale, final double TimeStamp) {
+			final String DistanceType, final double DistanceScale, final double TimeStamp, final boolean Reversal) {
 		final GeneticAlgorithms G = new GeneticAlgorithms();
 		final int optimizedResurfacingStops = G.OptimizeRurfacingUsingGA1(Map, NumNodes, NumAUVs, Speed, DistanceType,
-				DistanceScale, TimeStamp);
+				DistanceScale, TimeStamp, Reversal);
 		this.InsertResurfaceStops("RKN", optimizedResurfacingStops);
 	}
 
@@ -123,6 +139,19 @@ public class Tour implements Comparable<Tour> {
 			final String DistanceType, final double DistanceScale, final double TimeStamp, final ArrayList<Integer> T) {
 		final GeneticAlgorithms G = new GeneticAlgorithms();
 		final ArrayList<Integer> Tour = G.OptimizeRurfacingUsingGA2(Map, NumNodes, NumAUVs, Speed, DistanceType,
+				DistanceScale, TimeStamp, T);
+		for (int i = 0; i < Tour.size(); i++) {
+			if (Tour.get(i) == -3) {
+				Tour.remove(i);
+			}
+		}
+		this.CreateTour(Tour);
+	}
+
+	private void RouteOptimizedByGA3(final SimulationMap Map, final int NumNodes, final int NumAUVs, final double Speed,
+			final String DistanceType, final double DistanceScale, final double TimeStamp, final ArrayList<Integer> T) {
+		final GeneticAlgorithms G = new GeneticAlgorithms();
+		final ArrayList<Integer> Tour = G.OptimizeRurfacingUsingGA3(Map, NumNodes, NumAUVs, Speed, DistanceType,
 				DistanceScale, TimeStamp, T);
 		for (int i = 0; i < Tour.size(); i++) {
 			if (Tour.get(i) == -3) {
@@ -167,13 +196,15 @@ public class Tour implements Comparable<Tour> {
 				}
 			}
 		}
-		if ((TypeOfInsertion == "RLN") || ((TypeOfInsertion == "RKN") && (NodeVisitsBetweenStops == 0))) {
+		if ((TypeOfInsertion == "RLN")
+				|| (((TypeOfInsertion == "RKN") || (TypeOfInsertion == "RKNR")) && (NodeVisitsBetweenStops == 0))) {
 			for (int y = 0; y < this.NumOfAUVs; y++) {
 				// Append resurface stop in the end if it is not appended by the
 				// above loop
 				if (this.theTour.get(y).get(this.theTour.get(y).size() - 1) != -2) {
 					this.theTour.get(y).add(-2);
 				}
+				this.NameOfPlanner = this.NameOfPlanner + " -\t" + Integer.toString(NodeVisitsBetweenStops);
 			}
 		}
 		if ((TypeOfInsertion == "RKN") && (NodeVisitsBetweenStops != 0)) {
@@ -188,6 +219,25 @@ public class Tour implements Comparable<Tour> {
 				if (this.theTour.get(y).get(this.theTour.get(y).size() - 1) != -2) {
 					this.theTour.get(y).add(-2);
 				}
+				this.NameOfPlanner = this.NameOfPlanner + " -\t" + Integer.toString(NodeVisitsBetweenStops);
+			}
+		}
+		if ((TypeOfInsertion == "RKNR") && (NodeVisitsBetweenStops != 0)) {
+			for (int y = 0; y < this.NumOfAUVs; y++) {
+				final int LastNode = this.theTour.get(y).size();
+				final int InsertIndex = NodeVisitsBetweenStops;
+				// System.out.println("Stops " + NodeVisitsBetweenStops);
+				for (int z = 0; (LastNode - z) >= 0; z += InsertIndex) {
+					// this.PrintTour();
+					// System.out.println(z);
+					this.theTour.get(y).add((LastNode - z), -2);
+				}
+				// Append resurface stop in the end if it is not appended by the
+				// above loop
+				if (this.theTour.get(y).get(0) == -2) {
+					this.theTour.get(y).remove(0);
+				}
+				this.NameOfPlanner = this.NameOfPlanner + " -\t" + Integer.toString(NodeVisitsBetweenStops);
 			}
 		}
 
