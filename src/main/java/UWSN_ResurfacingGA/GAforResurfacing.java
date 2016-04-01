@@ -21,6 +21,7 @@ public class GAforResurfacing implements constUWSN {
     public static Logger LOGGER =
             LoggerFactory.getLogger("UWSN_ResurfacingGA.GAforResurfacing");
 
+
     private static final GAforResurfacing instance = new GAforResurfacing();
     private final Random rand;
     public ArrayList<Tour> allTours = new ArrayList<Tour>();
@@ -32,7 +33,7 @@ public class GAforResurfacing implements constUWSN {
 
     public void run() {
         for (int i = 0; i < constUWSN.SAMPLES_PER_TOUR; i++) {
-            GAforResurfacing.LOGGER.info(
+            GAforResurfacing.LOGGER.debug(
                     String.format("Currently the run number %s is executing",
                             constUWSN.SAMPLES_PER_TOUR));
             this.singleSimulationRun();
@@ -46,7 +47,8 @@ public class GAforResurfacing implements constUWSN {
         // Initialize Map
         final SimulationMap myMap =
                 new SimulationMap(constUWSN.X_DIM, constUWSN.Y_DIM);
-        myMap.InitializeMap("StraightLine", constUWSN.DEPLOYMENT_DEPTH,
+        GAforResurfacing.LOGGER.debug("Initializing the map");
+        myMap.initializeMap("StraightLine", constUWSN.DEPLOYMENT_DEPTH,
                 constUWSN.DISTANCE_SCALE);
 
         // Initialize an AUV for packet initialization measurements
@@ -63,6 +65,7 @@ public class GAforResurfacing implements constUWSN {
          * System.out.println("VoI Map"); MyMap.PrintVoIMap(LastPacketTS);
          * System.out.println();
          */
+        GAforResurfacing.LOGGER.debug("Creating and evaluating the tour");
         this.createAndEvaluateTours(myMap, lastPacketTimeStamp);
 
     }
@@ -95,11 +98,11 @@ public class GAforResurfacing implements constUWSN {
                         tour, MyMap, lastPacketTimeStamp, constUWSN.AUV_SPEED,
                         constUWSN.DISTANCE_SCALE, constUWSN.DISTANCE_TYPE));
         allTours.add(tour);
-        for (int NumResurfaceStops =
-                0; NumResurfaceStops < constUWSN.NUM_OF_NODES; NumResurfaceStops++) {
+        for (int numOfResurfaceStops =
+                0; numOfResurfaceStops < constUWSN.NUM_OF_NODES; numOfResurfaceStops++) {
             tour = new Tour("Reversal : Resurface After K-Nodes",
                     constUWSN.NUM_OF_AUVS, constUWSN.NUM_OF_NODES, MyMap,
-                    constUWSN.DISTANCE_TYPE, NumResurfaceStops,
+                    constUWSN.DISTANCE_TYPE, numOfResurfaceStops,
                     constUWSN.AUV_SPEED, constUWSN.DISTANCE_SCALE, lastPacketTimeStamp,
                     null);
             voiEvaluation = new VoIEvaluation();

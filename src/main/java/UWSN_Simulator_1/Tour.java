@@ -105,14 +105,14 @@ public class Tour implements Comparable<Tour> {
 		int NodeToBeAssigned = -1;
 		for (int y = 0; y < this.NumOfAUVs; y++) {
 			for (int z = 0; z < this.AUVTourMaxLength; z++) {
-				MapTraversalLoop: for (int m = 0; m < M.SizeMetric_X; m++) {
-					for (int n = 0; n < M.SizeMetric_Y; n++) {
+				MapTraversalLoop: for (int m = 0; m < M.sizeMetric_X; m++) {
+					for (int n = 0; n < M.sizeMetric_Y; n++) {
 						if ((m % 2) == 0) {
-							NodeToBeAssigned = M.nodes.get(m).get(n).NodeIdentifier;
+							NodeToBeAssigned = M.nodes.get(m).get(n).nodeIdentifier;
 						} else if ((m % 2) == 1) {
-							NodeToBeAssigned = M.nodes.get(m).get((M.SizeMetric_Y - 1) - n).NodeIdentifier;
+							NodeToBeAssigned = M.nodes.get(m).get((M.sizeMetric_Y - 1) - n).nodeIdentifier;
 						}
-						if (((M.SizeMetric_X * m) + n) == x) {
+						if (((M.sizeMetric_X * m) + n) == x) {
 							break MapTraversalLoop;
 						}
 					}

@@ -66,7 +66,7 @@ public class ResurfacingSimulation {
 
 		// Initialize Map
 		final SimulationMap MyMap = new SimulationMap(X_DIM, Y_DIM);
-		MyMap.InitializeMap("StraightLine", DEPLOYMENT_DEPTH, DISTANCE_SCALE);
+		MyMap.initializeMap("StraightLine", DEPLOYMENT_DEPTH, DISTANCE_SCALE);
 
 		// Initialize an AUV for packet initialization measurements
 		final AUV Explorer = new AUV(AUV_SPEED, DISTANCE_SCALE, 0);

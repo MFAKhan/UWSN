@@ -39,9 +39,9 @@ public class AUV {
 		final double SY = Source.coordinate_Y;
 		final double DX = Destination.coordinate_X;
 		final double DY = Destination.coordinate_Y;
-		if (Source.NodeIdentifier == -2) {
+		if (Source.nodeIdentifier == -2) {
 			Distance = Destination.DistanceToSurface;
-		} else if (Destination.NodeIdentifier == -2) {
+		} else if (Destination.nodeIdentifier == -2) {
 			Distance = Source.DistanceToSurface;
 		} else {
 			if (DistanceType == "Manhattan") {
@@ -85,7 +85,7 @@ public class AUV {
 
 	public void CreateTour(final SimulationMap M, final ArrayList<ArrayList<Integer>> T) {
 		for (int i = 0; i < T.get(this.AUVIdentifier).size(); i++) {
-			final Node NodeToAddToTour = M.GetNodeBasedOnId(T.get(this.AUVIdentifier).get(i));
+			final Node NodeToAddToTour = M.getNodeBasedOnID(T.get(this.AUVIdentifier).get(i));
 			this.CurrentTour.add(NodeToAddToTour);
 		}
 	}
@@ -114,11 +114,11 @@ public class AUV {
 		for (int i = 0; i < this.CurrentTour.size(); i++) {
 			this.TimeNodeVisitedAt.add(CurrentTS);
 			// if node is not a transmit point i.e. resurfacing point
-			if (this.CurrentTour.get(i).NodeIdentifier != -2) {
+			if (this.CurrentTour.get(i).nodeIdentifier != -2) {
 				for (int j = 0; j < this.CurrentTour.get(i).packets.size(); j++) {
 					final Packet PacketRetrieved = this.CurrentTour.get(i).packets.get(j).CreateCopy();
 					PacketRetrieved.SetTimeStampRetrieved(CurrentTS);
-					PacketRetrieved.StoredAtNodeID = this.CurrentTour.get(i).NodeIdentifier;
+					PacketRetrieved.StoredAtNodeID = this.CurrentTour.get(i).nodeIdentifier;
 					PacketRetrieved.ResurfaceTransmitBatchNumber = BatchNumber;
 					this.RetirevedPackets.add(PacketRetrieved);
 				}

@@ -10,11 +10,11 @@ public class Node implements Comparable<Node> {
 	public double coordinate_Y;
 	public double DistanceToSurface;
 	
-	public int NodeIdentifier = -1;
+	public int nodeIdentifier = -1;
 	
 	public boolean IsTransmitNode = false;
 	
-	public Node [][] Neighbors = new Node [3][3];
+	public Node [][] neighbors = new Node [3][3];
 	
 	public ArrayList<Packet> packets = new ArrayList<Packet>();
 	
@@ -24,16 +24,16 @@ public class Node implements Comparable<Node> {
 			coordinate_X = X_loc;
 			coordinate_Y = Y_loc;
 			DistanceToSurface = DTS; 
-			NodeIdentifier = ID;
+			nodeIdentifier = ID;
 			for (int i = 0; i < 3; i++) {
 				for (int j = 0; j < 3; j++) {
-					Neighbors[i][j] = null;
+					neighbors[i][j] = null;
 				}
 			}
 		}
 		else {
 			//ID reserved for transmit node station
-			NodeIdentifier = -2;
+			nodeIdentifier = -2;
 			IsTransmitNode = IsTN;			
 		}
 	}
