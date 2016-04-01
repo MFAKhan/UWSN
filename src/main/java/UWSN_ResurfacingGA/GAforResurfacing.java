@@ -2,6 +2,9 @@ package UWSN_ResurfacingGA;
 
 import java.util.Random;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import UWSN_Simulator_1.AUV;
 import UWSN_Simulator_1.Packet;
 import UWSN_Simulator_1.SimulationMap;
@@ -14,9 +17,10 @@ import UWSN_Simulator_1.VoIEvaluation;
  *
  */
 public class GAforResurfacing implements constUWSN {
+    public static Logger LOGGER =
+            LoggerFactory.getLogger("UWSN_ResurfacingGA.GAforResurfacing");
 
     private static final GAforResurfacing instance = new GAforResurfacing();
-
     private final Random rand;
 
     private GAforResurfacing() {
@@ -25,6 +29,9 @@ public class GAforResurfacing implements constUWSN {
 
     public void run() {
         for (int i = 0; i < constUWSN.SAMPLES_PER_TOUR; i++) {
+            GAforResurfacing.LOGGER.info(
+                    String.format("Currently the run number %s is executing",
+                            constUWSN.SAMPLES_PER_TOUR));
             this.singleSimulationRun();
         }
         this.analyzeExperiment();
@@ -70,8 +77,8 @@ public class GAforResurfacing implements constUWSN {
                     constUWSN.DISTANCE_SCALE, LastPacketTS, null);
             voiEvaluation = new VoIEvaluation();
             tour.setVoIAccumulatedByTour(
-                    voiEvaluation.VoIAllAUVTours(constUWSN.VoICalculationBasis, tour, MyMap,
-                            LastPacketTS, constUWSN.AUV_SPEED,
+                    voiEvaluation.VoIAllAUVTours(constUWSN.VoICalculationBasis,
+                            tour, MyMap, LastPacketTS, constUWSN.AUV_SPEED,
                             constUWSN.DISTANCE_SCALE, constUWSN.DISTANCE_TYPE));
             constUWSN.AllTours.add(tour);
         }
@@ -81,8 +88,8 @@ public class GAforResurfacing implements constUWSN {
                 null);
         voiEvaluation = new VoIEvaluation();
         tour.setVoIAccumulatedByTour(
-                voiEvaluation.VoIAllAUVTours(constUWSN.VoICalculationBasis, tour, MyMap,
-                        LastPacketTS, constUWSN.AUV_SPEED,
+                voiEvaluation.VoIAllAUVTours(constUWSN.VoICalculationBasis,
+                        tour, MyMap, LastPacketTS, constUWSN.AUV_SPEED,
                         constUWSN.DISTANCE_SCALE, constUWSN.DISTANCE_TYPE));
         constUWSN.AllTours.add(tour);
         for (int NumResurfaceStops =
@@ -94,8 +101,8 @@ public class GAforResurfacing implements constUWSN {
                     null);
             voiEvaluation = new VoIEvaluation();
             tour.setVoIAccumulatedByTour(
-                    voiEvaluation.VoIAllAUVTours(constUWSN.VoICalculationBasis, tour, MyMap,
-                            LastPacketTS, constUWSN.AUV_SPEED,
+                    voiEvaluation.VoIAllAUVTours(constUWSN.VoICalculationBasis,
+                            tour, MyMap, LastPacketTS, constUWSN.AUV_SPEED,
                             constUWSN.DISTANCE_SCALE, constUWSN.DISTANCE_TYPE));
             constUWSN.AllTours.add(tour);
         }
@@ -105,8 +112,8 @@ public class GAforResurfacing implements constUWSN {
                 constUWSN.DISTANCE_SCALE, LastPacketTS, null);
         voiEvaluation = new VoIEvaluation();
         tour.setVoIAccumulatedByTour(
-                voiEvaluation.VoIAllAUVTours(constUWSN.VoICalculationBasis, tour, MyMap,
-                        LastPacketTS, constUWSN.AUV_SPEED,
+                voiEvaluation.VoIAllAUVTours(constUWSN.VoICalculationBasis,
+                        tour, MyMap, LastPacketTS, constUWSN.AUV_SPEED,
                         constUWSN.DISTANCE_SCALE, constUWSN.DISTANCE_TYPE));
         constUWSN.AllTours.add(tour);
         tour = new Tour("Resurface Tour Using GA2", constUWSN.NUM_OF_AUVS,
@@ -115,8 +122,8 @@ public class GAforResurfacing implements constUWSN {
                 null);
         voiEvaluation = new VoIEvaluation();
         tour.setVoIAccumulatedByTour(
-                voiEvaluation.VoIAllAUVTours(constUWSN.VoICalculationBasis, tour, MyMap,
-                        LastPacketTS, constUWSN.AUV_SPEED,
+                voiEvaluation.VoIAllAUVTours(constUWSN.VoICalculationBasis,
+                        tour, MyMap, LastPacketTS, constUWSN.AUV_SPEED,
                         constUWSN.DISTANCE_SCALE, constUWSN.DISTANCE_TYPE));
         constUWSN.AllTours.add(tour);
         tour = new Tour("Resurface Tour Using GA3", constUWSN.NUM_OF_AUVS,
@@ -125,8 +132,8 @@ public class GAforResurfacing implements constUWSN {
                 null);
         voiEvaluation = new VoIEvaluation();
         tour.setVoIAccumulatedByTour(
-                voiEvaluation.VoIAllAUVTours(constUWSN.VoICalculationBasis, tour, MyMap,
-                        LastPacketTS, constUWSN.AUV_SPEED,
+                voiEvaluation.VoIAllAUVTours(constUWSN.VoICalculationBasis,
+                        tour, MyMap, LastPacketTS, constUWSN.AUV_SPEED,
                         constUWSN.DISTANCE_SCALE, constUWSN.DISTANCE_TYPE));
         constUWSN.AllTours.add(tour);
     }
@@ -190,8 +197,8 @@ public class GAforResurfacing implements constUWSN {
             }
         }
         // Setting up decays
-        decay = determineDecayConst(M, A, Magnitude,
-                DesiredVoIFactor, DistanceType, LatestTS);
+        decay = determineDecayConst(M, A, Magnitude, DesiredVoIFactor,
+                DistanceType, LatestTS);
         for (int Xloc = 0; Xloc < x; Xloc++) {
             for (int Yloc = 0; Yloc < y; Yloc++) {
                 for (int i = 0; i < M.Nodes.get(Xloc).get(Yloc).Packets
@@ -209,8 +216,8 @@ public class GAforResurfacing implements constUWSN {
         return LatestTS;
     }
 
-    private double determineDecayConst(final SimulationMap M,
-        final AUV A, final double Magnitude, final double DesiredVoIFactor,
+    private double determineDecayConst(final SimulationMap M, final AUV A,
+        final double Magnitude, final double DesiredVoIFactor,
         final String DistanceType, final Double LatestTS) {
         // t = S / V
         // VoI = A * e^-(Bt) => B = ln(VoI/A) * -1/t
