@@ -107,7 +107,7 @@ public class ResurfacingSimulation {
 					for (int i = 0; i < EXPECTED_MAX_PACKETS_AT_NODE; i++) {
 						LatestTS += 1;
 						final Packet NewPacket = new Packet("Normal", Magnitude, Decay, LatestTS);
-						M.Nodes.get(Xloc).get(Yloc).AcquirePacket(NewPacket);
+						M.nodes.get(Xloc).get(Yloc).acquirePacket(NewPacket);
 					}
 				}
 			}
@@ -120,7 +120,7 @@ public class ResurfacingSimulation {
 					for (int i = 0; i < EXPECTED_MAX_PACKETS_AT_NODE; i++) {
 						LatestTS += 1;
 						final Packet NewPacket = new Packet("Normal", Magnitude, Decay, LatestTS);
-						M.Nodes.get(Xloc).get(Yloc).AcquirePacket(NewPacket);
+						M.nodes.get(Xloc).get(Yloc).acquirePacket(NewPacket);
 					}
 				}
 			}
@@ -137,7 +137,7 @@ public class ResurfacingSimulation {
 					for (int i = 0; i < RandNumOfPackets; i++) {
 						TS += 10;
 						final Packet NewPacket = new Packet("Normal", Magnitude, Decay, LatestTS);
-						M.Nodes.get(Xloc).get(Yloc).AcquirePacket(NewPacket);
+						M.nodes.get(Xloc).get(Yloc).acquirePacket(NewPacket);
 						if (LatestTS < TS) {
 							LatestTS = TS;
 						}
@@ -149,10 +149,10 @@ public class ResurfacingSimulation {
 		Decay = DetermineDecayConstant(M, A, Magnitude, DesiredVoIFactor, DistanceType, LatestTS);
 		for (int Xloc = 0; Xloc < x; Xloc++) {
 			for (int Yloc = 0; Yloc < y; Yloc++) {
-				for (int i = 0; i < M.Nodes.get(Xloc).get(Yloc).Packets.size(); i++) {
-					final String PacketClass = M.Nodes.get(Xloc).get(Yloc).Packets.get(i).PacketDataClass;
+				for (int i = 0; i < M.nodes.get(Xloc).get(Yloc).packets.size(); i++) {
+					final String PacketClass = M.nodes.get(Xloc).get(Yloc).packets.get(i).PacketDataClass;
 					if (PacketClass == "Normal") {
-						M.Nodes.get(Xloc).get(Yloc).Packets.get(i).VoIDecay = Decay;
+						M.nodes.get(Xloc).get(Yloc).packets.get(i).VoIDecay = Decay;
 					}
 				}
 			}
@@ -168,7 +168,7 @@ public class ResurfacingSimulation {
 		// double OffsetTime = LatestTS;
 		final double OffsetTime = 0;
 
-		final double TimeForAverageTourLength = M.AverageTourLength(DistanceType) / A.AUVvelocity;
+		final double TimeForAverageTourLength = M.averageTourLength(DistanceType) / A.AUVvelocity;
 		Decay = Math.log((DesiredVoIFactor * Magnitude) / Magnitude) * -(1 / (TimeForAverageTourLength + OffsetTime));
 
 		return Decay;

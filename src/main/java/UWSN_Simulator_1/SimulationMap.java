@@ -7,7 +7,7 @@ import UWSN_ResurfacingGA.GAforResurfacing;
 
 public class SimulationMap {
 
-    public ArrayList<ArrayList<Node>> Nodes = new ArrayList<ArrayList<Node>>();
+    public ArrayList<ArrayList<Node>> nodes = new ArrayList<ArrayList<Node>>();
     public Node TransmitNode;
 
     public int SizeMetric_X = 0;
@@ -34,9 +34,9 @@ public class SimulationMap {
             // Create Sensor Nodes
             ID = 0;
             for (int i = 0; i < this.SizeMetric_X; i++) {
-                this.Nodes.add(i, new ArrayList<Node>());
+                this.nodes.add(i, new ArrayList<Node>());
                 for (int j = 0; j < this.SizeMetric_Y; j++) {
-                    this.Nodes.get(i)
+                    this.nodes.get(i)
                     .add(new Node(false, i, j, DeploymentDepth, ID));
                     ID++;
                 }
@@ -51,11 +51,11 @@ public class SimulationMap {
                             if ((NeighborXindex) > -1 && (NeighborYindex) > -1
                                     && (NeighborXindex) < this.SizeMetric_X
                                     && (NeighborYindex) < this.SizeMetric_Y) {
-                                this.Nodes.get(i).get(j).Neighbors[x][y] =
-                                        this.Nodes.get(NeighborXindex)
+                                this.nodes.get(i).get(j).Neighbors[x][y] =
+                                        this.nodes.get(NeighborXindex)
                                         .get(NeighborYindex);
                             } else {
-                                this.Nodes.get(i).get(j).Neighbors[x][y] = null;
+                                this.nodes.get(i).get(j).Neighbors[x][y] = null;
                             }
                         }
                     }
@@ -68,7 +68,7 @@ public class SimulationMap {
         for (int Xloc = 0; Xloc < this.SizeMetric_X; Xloc++) {
             for (int Yloc = 0; Yloc < this.SizeMetric_Y; Yloc++) {
                 System.out.printf("%10.3f",
-                        this.Nodes.get(Xloc).get(Yloc).VoIOfferAtNode(TS));
+                        this.nodes.get(Xloc).get(Yloc).VoIOfferAtNode(TS));
             }
             System.out.println();
         }
@@ -81,8 +81,8 @@ public class SimulationMap {
         } else {
             SearchLoop: for (int Xloc = 0; Xloc < this.SizeMetric_X; Xloc++) {
                 for (int Yloc = 0; Yloc < this.SizeMetric_Y; Yloc++) {
-                    if (this.Nodes.get(Xloc).get(Yloc).NodeIdentifier == ID) {
-                        NodeToFind = this.Nodes.get(Xloc).get(Yloc);
+                    if (this.nodes.get(Xloc).get(Yloc).NodeIdentifier == ID) {
+                        NodeToFind = this.nodes.get(Xloc).get(Yloc);
                         break SearchLoop;
                     }
                 }
@@ -113,9 +113,9 @@ public class SimulationMap {
             for (int YlocS = 0; YlocS < this.SizeMetric_Y; YlocS++) {
                 for (int XlocD = 0; XlocD < this.SizeMetric_X; XlocD++) {
                     for (int YlocD = 0; YlocD < this.SizeMetric_Y; YlocD++) {
-                        final Node Source = this.Nodes.get(XlocS).get(YlocS);
+                        final Node Source = this.nodes.get(XlocS).get(YlocS);
                         final Node Destination =
-                                this.Nodes.get(XlocD).get(YlocD);
+                                this.nodes.get(XlocD).get(YlocD);
                         AverageDistance += this.InterNodeDistance(Source,
                                 Destination, DistanceType);
                     }
@@ -128,7 +128,7 @@ public class SimulationMap {
         return (AverageDistance) / (NumberofNodes * NeighborsOfEachNode);
     }
 
-    public double AverageTourLength(final String DistanceType) {
+    public double averageTourLength(final String DistanceType) {
         final int NumberofNodes = this.SizeMetric_X * this.SizeMetric_Y;
         return this.AverageNodeDistance(DistanceType) * NumberofNodes;
     }
@@ -269,7 +269,7 @@ public class SimulationMap {
         final ArrayList<Node> NodeList = new ArrayList<Node>();
         for (int Xloc = 0; Xloc < this.SizeMetric_X; Xloc++) {
             for (int Yloc = 0; Yloc < this.SizeMetric_Y; Yloc++) {
-                NodeList.add(this.Nodes.get(Xloc).get(Yloc));
+                NodeList.add(this.nodes.get(Xloc).get(Yloc));
             }
         }
         return NodeList;
@@ -279,7 +279,7 @@ public class SimulationMap {
         final ArrayList<Node> NodeList = new ArrayList<Node>();
         for (int Xloc = 0; Xloc < this.SizeMetric_X; Xloc++) {
             for (int Yloc = 0; Yloc < this.SizeMetric_Y; Yloc++) {
-                NodeList.add(this.Nodes.get(Xloc).get(Yloc));
+                NodeList.add(this.nodes.get(Xloc).get(Yloc));
             }
         }
         final ArrayList<Node> NodeListSorted = NodeList;

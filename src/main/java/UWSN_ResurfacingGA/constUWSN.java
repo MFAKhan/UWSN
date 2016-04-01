@@ -1,9 +1,5 @@
 package UWSN_ResurfacingGA;
 
-import java.util.ArrayList;
-
-import UWSN_Simulator_1.Tour;
-
 /**
  * Contains the constants that are used for the simulation setup
  *
@@ -39,7 +35,7 @@ public interface constUWSN {
     public final int SAMPLES_PER_TOUR = 1;
     public final int TOTAL_SAMPLES =
             constUWSN.SAMPLES_PER_TOUR * constUWSN.TOUR_TYPES;
-    public ArrayList<Tour> AllTours = new ArrayList<Tour>();
+
     public double[][] results = new double[constUWSN.TOUR_TYPES][1];
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

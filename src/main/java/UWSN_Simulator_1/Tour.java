@@ -108,9 +108,9 @@ public class Tour implements Comparable<Tour> {
 				MapTraversalLoop: for (int m = 0; m < M.SizeMetric_X; m++) {
 					for (int n = 0; n < M.SizeMetric_Y; n++) {
 						if ((m % 2) == 0) {
-							NodeToBeAssigned = M.Nodes.get(m).get(n).NodeIdentifier;
+							NodeToBeAssigned = M.nodes.get(m).get(n).NodeIdentifier;
 						} else if ((m % 2) == 1) {
-							NodeToBeAssigned = M.Nodes.get(m).get((M.SizeMetric_Y - 1) - n).NodeIdentifier;
+							NodeToBeAssigned = M.nodes.get(m).get((M.SizeMetric_Y - 1) - n).NodeIdentifier;
 						}
 						if (((M.SizeMetric_X * m) + n) == x) {
 							break MapTraversalLoop;

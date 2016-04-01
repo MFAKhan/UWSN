@@ -55,9 +55,9 @@ public class AUV {
 	}
 
 	public void RetrievePacketsFromNode(final Node BeingVisited, final double CurrentTimeAtVisit) {
-		for (int i = 0; i < BeingVisited.Packets.size(); i++) {
-			BeingVisited.Packets.get(i).SetTimeStampRetrieved(CurrentTimeAtVisit);
-			final Packet Retrieved = BeingVisited.Packets.get(i).CreateCopy();
+		for (int i = 0; i < BeingVisited.packets.size(); i++) {
+			BeingVisited.packets.get(i).SetTimeStampRetrieved(CurrentTimeAtVisit);
+			final Packet Retrieved = BeingVisited.packets.get(i).CreateCopy();
 			this.RetirevedPackets.add(Retrieved);
 		}
 		BeingVisited.WasVisited = true;
@@ -94,8 +94,8 @@ public class AUV {
 			final Tour T) {
 		double CurrentTS = StartTime;
 		for (int i = 0; i < this.CurrentTour.size(); i++) {
-			for (int j = 0; j < this.CurrentTour.get(i).Packets.size(); j++) {
-				final Packet PacketRetrieved = this.CurrentTour.get(i).Packets.get(j).CreateCopy();
+			for (int j = 0; j < this.CurrentTour.get(i).packets.size(); j++) {
+				final Packet PacketRetrieved = this.CurrentTour.get(i).packets.get(j).CreateCopy();
 				PacketRetrieved.SetTimeStampRetrieved(CurrentTS);
 				this.RetirevedPackets.add(PacketRetrieved);
 			}
@@ -115,8 +115,8 @@ public class AUV {
 			this.TimeNodeVisitedAt.add(CurrentTS);
 			// if node is not a transmit point i.e. resurfacing point
 			if (this.CurrentTour.get(i).NodeIdentifier != -2) {
-				for (int j = 0; j < this.CurrentTour.get(i).Packets.size(); j++) {
-					final Packet PacketRetrieved = this.CurrentTour.get(i).Packets.get(j).CreateCopy();
+				for (int j = 0; j < this.CurrentTour.get(i).packets.size(); j++) {
+					final Packet PacketRetrieved = this.CurrentTour.get(i).packets.get(j).CreateCopy();
 					PacketRetrieved.SetTimeStampRetrieved(CurrentTS);
 					PacketRetrieved.StoredAtNodeID = this.CurrentTour.get(i).NodeIdentifier;
 					PacketRetrieved.ResurfaceTransmitBatchNumber = BatchNumber;

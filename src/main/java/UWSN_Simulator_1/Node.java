@@ -16,7 +16,7 @@ public class Node implements Comparable<Node> {
 	
 	public Node [][] Neighbors = new Node [3][3];
 	
-	public ArrayList<Packet> Packets = new ArrayList<Packet>();
+	public ArrayList<Packet> packets = new ArrayList<Packet>();
 	
 	public Node(boolean IsTN, double X_loc, double Y_loc, double DTS, int ID) {
 		if (IsTN == false) {
@@ -38,21 +38,21 @@ public class Node implements Comparable<Node> {
 		}
 	}
 
-	public void AcquirePacket(Packet NewPacket) {
-		Packets.add(NewPacket);
+	public void acquirePacket(Packet NewPacket) {
+		packets.add(NewPacket);
 	}
 
 	public double VoIOfferAtNode(double TimeInstant) {
 		double VoIVal = 0;
-		for ( int i = 0; i < Packets.size(); i++) {
-			VoIVal += Packets.get(i).currentVoIValue(TimeInstant);
+		for ( int i = 0; i < packets.size(); i++) {
+			VoIVal += packets.get(i).currentVoIValue(TimeInstant);
 		}
 		return VoIVal;
 	}
 	
 	public int compareTo(Node Comp) {
-		double TS1 = this.Packets.get(this.Packets.size()-1).TimeStampAcquired;
-		double TS2 = Comp.Packets.get(Comp.Packets.size()-1).TimeStampAcquired;
+		double TS1 = this.packets.get(this.packets.size()-1).TimeStampAcquired;
+		double TS2 = Comp.packets.get(Comp.packets.size()-1).TimeStampAcquired;
 		double TimeInstant = ( TS1 > TS2 ) ? TS1 : TS2 ;
 		if(this.VoIOfferAtNode(TimeInstant) < Comp.VoIOfferAtNode(TimeInstant)) {
             return 1;
