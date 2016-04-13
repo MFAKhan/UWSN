@@ -33,6 +33,7 @@ public class VoIEvaluation {
 			T.ExecutionTimeOfTour.add(AUV, TourTime);
 			T.DistanceTravelledForTour.add(AUV, DistanceTravelled);
 			VoI = Explorer.VoIOfferAtAUVBasedOnTransmit();
+			// Explorer.PrintPackets();
 		}
 		return VoI;
 	}

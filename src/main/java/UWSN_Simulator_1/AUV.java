@@ -77,7 +77,8 @@ public class AUV {
 		int BatchNumber = -1;
 		for (int i = 0; i < this.RetirevedPackets.size(); i++) {
 			BatchNumber = this.RetirevedPackets.get(i).ResurfaceTransmitBatchNumber;
-			final double TimeInstant = this.TimeTransmitNodeVisitedAt.get(BatchNumber);
+			this.RetirevedPackets.get(i).TimeStampTransmitted = this.TimeTransmitNodeVisitedAt.get(BatchNumber);
+			final double TimeInstant = this.RetirevedPackets.get(i).GetTimeStampTransmitted();
 			VoIVal += this.RetirevedPackets.get(i).currentVoIValue(TimeInstant);
 		}
 		return VoIVal;
@@ -87,6 +88,7 @@ public class AUV {
 		for (int i = 0; i < T.get(this.AUVIdentifier).size(); i++) {
 			final Node NodeToAddToTour = M.getNodeBasedOnID(T.get(this.AUVIdentifier).get(i));
 			this.CurrentTour.add(NodeToAddToTour);
+			// System.out.print(this.CurrentTour.get(i).IsTransmitNode + " - ");
 		}
 	}
 
@@ -132,6 +134,22 @@ public class AUV {
 			}
 		}
 		return CurrentTS;
+	}
+
+	public void PrintPackets() {
+		for (int i = 0; i < this.RetirevedPackets.size(); i++) {
+			System.out.print(this.RetirevedPackets.get(i).StoredAtNodeID + " ");
+			// System.out.print(this.RetirevedPackets.get(i).VoIDecay + " ");
+			// System.out.print(this.RetirevedPackets.get(i).VoIInitialMagnitude
+			// + " ");
+			System.out.print(this.RetirevedPackets.get(i).TimeStampAcquired + " ");
+			System.out.print(this.RetirevedPackets.get(i).TimeStampRetrieved + " ");
+			System.out.print(this.RetirevedPackets.get(i).TimeStampTransmitted + " ");
+			System.out.print(this.RetirevedPackets.get(i).ResurfaceTransmitBatchNumber + " ");
+			System.out.println(
+					this.RetirevedPackets.get(i).currentVoIValue(this.RetirevedPackets.get(i).TimeStampTransmitted)
+							+ " ");
+		}
 	}
 
 }
