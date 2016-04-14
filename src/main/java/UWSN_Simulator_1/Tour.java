@@ -20,8 +20,9 @@ public class Tour implements Comparable<Tour> {
 	ArrayList<Double> DistanceTravelledForTour = new ArrayList<Double>();
 	ArrayList<Double> ExecutionTimeOfTour = new ArrayList<Double>();
 
-	private double VoIAccumulatedByTour = -1; // Fitness not yet
-												// evaluated
+	// Fitness not yet evaluated
+	private double VoIAccumulatedByTour = -1;
+	private int NumTimesResurfaced = -1;
 
 	private static Random rand = new Random();
 
@@ -64,23 +65,23 @@ public class Tour implements Comparable<Tour> {
 			this.InsertResurfaceStops(this.NameOfPlanner, NumResurfaceStops);
 		}
 		if (InitType == "Resurface Tour Using GA1") {
-			this.NameOfPlanner = "RGA1";
+			this.NameOfPlanner = "G_PR ";
 			this.LawnMower(myMap);
 			this.RouteOptimizedByGA1(myMap, Nodes, AUVs, Speed, DistanceType, DistanceScale, TimeStamp, false);
 		}
 		if (InitType == "Reversal : Resurface Tour Using GA1") {
-			this.NameOfPlanner = "RGA1R";
+			this.NameOfPlanner = "G_PR-R ";
 			this.LawnMower(myMap);
 			this.RouteOptimizedByGA1(myMap, Nodes, AUVs, Speed, DistanceType, DistanceScale, TimeStamp, true);
 		}
 		if (InitType == "Resurface Tour Using GA2") {
-			this.NameOfPlanner = "RGA2 - X";
+			this.NameOfPlanner = "G_Opt ";
 			this.LawnMower(myMap);
 			this.RouteOptimizedByGA2(myMap, Nodes, AUVs, Speed, DistanceType, DistanceScale, TimeStamp,
 					this.theTour.get(0));
 		}
 		if (InitType == "Resurface Tour Using GA3") {
-			this.NameOfPlanner = "RGA3 - X";
+			this.NameOfPlanner = "G_Opt-S ";
 			this.LawnMower(myMap);
 			this.RouteOptimizedByGA3(myMap, Nodes, AUVs, Speed, DistanceType, DistanceScale, TimeStamp,
 					this.theTour.get(0));
@@ -90,6 +91,19 @@ public class Tour implements Comparable<Tour> {
 			this.LawnMower(myMap);
 			this.InsertResurfaceStops(this.NameOfPlanner, NumResurfaceStops);
 		}
+		this.CountNumberOfTimesResurfaced();
+	}
+
+	private void CountNumberOfTimesResurfaced() {
+		int count = 0;
+		for (int y = 0; y < this.NumOfAUVs; y++) {
+			for (int z = 0; z < this.theTour.get(y).size(); z++) {
+				if (this.theTour.get(y).get(z) == -2) {
+					count++;
+				}
+			}
+		}
+		this.NumTimesResurfaced = count;
 	}
 
 	private void CreateTour(final ArrayList<Integer> aTour) {
@@ -291,6 +305,10 @@ public class Tour implements Comparable<Tour> {
 
 	public void setVoIAccumulatedByTour(final double voIAccumulatedByTour) {
 		this.VoIAccumulatedByTour = voIAccumulatedByTour;
+	}
+
+	public double getNumTimesResurfaced() {
+		return this.NumTimesResurfaced;
 	}
 
 }

@@ -34,9 +34,11 @@ public class GAforResurfacing implements constUWSN {
 			GAforResurfacing.LOGGER
 					.debug(String.format("Currently the run number %s is executing", constUWSN.SAMPLES_PER_TOUR));
 			this.singleSimulationRun();
+			this.saveExperiment(i);
 		}
 		this.analyzeExperiment();
 		this.printAverages();
+		this.printAllExperiments();
 	}
 
 	public void singleSimulationRun() {
@@ -163,15 +165,37 @@ public class GAforResurfacing implements constUWSN {
 				}
 			}
 		}
-		// Random Initialization 2
-		else if (method.equals("Random 2")) {
+		// Random Initialization 2 - Initial Magnitudes vary from 1 to 100
+		else if (method.equals("Random Number of Packets - Variable VoI Magnitude")) {
 			latestTS = constUWSN.NUM_OF_NODES * (constUWSN.DISTANCE_SCALE / constUWSN.AUV_SPEED);
 			for (int Xloc = 0; Xloc < x; Xloc++) {
 				for (int Yloc = 0; Yloc < y; Yloc++) {
 					// Each node should have at least 1 packet
 					final int RandNumOfPackets = this.getRand().nextInt(constUWSN.EXPECTED_MAX_PACKETS_AT_NODE) + 1;
 					for (int i = 0; i < RandNumOfPackets; i++) {
-						final Packet NewPacket = new Packet("Normal", this.getRand().nextInt(100), decay,
+						final Packet NewPacket = new Packet("Normal", this.getRand().nextInt(99) + 1, decay,
+								this.getRand().nextInt((int) latestTS));
+						/*
+						 * Packet NewPacket; if (Yloc == 3) { NewPacket = new
+						 * Packet("Normal", 1000 * magnitude, 0.2 * decay,
+						 * this.getRand().nextInt((int) latestTS)); } else {
+						 * NewPacket = new Packet("Normal", magnitude, decay,
+						 * this.getRand().nextInt((int) latestTS)); }
+						 */
+						simulationMap.nodes.get(Xloc).get(Yloc).acquirePacket(NewPacket);
+					}
+				}
+			}
+		}
+		// Random Initialization 3 - Initial Magnitudes are from constants file
+		else if (method.equals("Random Number of Packets - Fixed VoI Magnitude")) {
+			latestTS = constUWSN.NUM_OF_NODES * (constUWSN.DISTANCE_SCALE / constUWSN.AUV_SPEED);
+			for (int Xloc = 0; Xloc < x; Xloc++) {
+				for (int Yloc = 0; Yloc < y; Yloc++) {
+					// Each node should have at least 1 packet
+					final int RandNumOfPackets = this.getRand().nextInt(constUWSN.EXPECTED_MAX_PACKETS_AT_NODE) + 1;
+					for (int i = 0; i < RandNumOfPackets; i++) {
+						final Packet NewPacket = new Packet("Normal", magnitude, decay,
 								this.getRand().nextInt((int) latestTS));
 						/*
 						 * Packet NewPacket; if (Yloc == 3) { NewPacket = new
@@ -219,25 +243,63 @@ public class GAforResurfacing implements constUWSN {
 		// Initialization
 		for (int i = 0; i < constUWSN.TOUR_TYPES; i++) {
 			constUWSN.results[i][0] = 0;
+			constUWSN.results[i][1] = 0;
 		}
 		// Summation
 		for (int i = 0; i < constUWSN.TOTAL_SAMPLES; i++) {
 			constUWSN.results[i % constUWSN.TOUR_TYPES][0] += this.allTours.get(i).getVoIAccumulatedByTour();
+			constUWSN.results[i % constUWSN.TOUR_TYPES][1] += this.allTours.get(i).getNumTimesResurfaced();
 		}
 		// Division
 		for (int i = 0; i < constUWSN.TOUR_TYPES; i++) {
 			constUWSN.results[i][0] = constUWSN.results[i][0] / constUWSN.SAMPLES_PER_TOUR;
+			constUWSN.results[i][1] = constUWSN.results[i][1] / constUWSN.SAMPLES_PER_TOUR;
 		}
 	}
 
 	void printAverages() {
-		System.out.println("Tour Type\tAvg. VoI\t");
+		System.out.println("\n");
+		System.out.println("Simulation Paramaters : ");
+		System.out.println("Number of Runs\t\t" + constUWSN.SAMPLES_PER_TOUR);
+		System.out.println("Number of Nodes\t\t" + constUWSN.NUM_OF_NODES);
+		System.out.println("Deployment Depth - DD\t" + constUWSN.DEPLOYMENT_DEPTH);
+		System.out.println("Internode Distance - ID\t" + constUWSN.DISTANCE_SCALE);
+		System.out.println("Ratio of DD to ID\t" + constUWSN.RATIO_DD_TO_DS);
+		System.out.println("Packets at node\t\t1 - " + constUWSN.EXPECTED_MAX_PACKETS_AT_NODE);
+		System.out.println("Packet Initilization\t" + constUWSN.PACKET_INITIALIZATION_TYPE);
+		System.out.println("\n");
+		System.out.println("Results : ");
+		System.out.println("Tour Type\tAvg. VoI\tResurfacing Count");
 		for (int i = 0; i < constUWSN.TOUR_TYPES; i++) {
-			System.out.print(this.allTours.get(i).NameOfPlanner + "\t");
-			for (int j = 0; j < 1; j++) {
-				System.out.print(String.format("%8.2f", constUWSN.results[i][j]));
+			if (this.allTours.get(i).NameOfPlanner.contains("G_")) {
+				final String Name = this.allTours.get(i).NameOfPlanner;
+				System.out.print(Name.substring(0, Name.indexOf(" ")) + "\t\t");
+				for (int j = 0; j < 2; j++) {
+					System.out.print(String.format("%8.2f", constUWSN.results[i][j]) + "\t");
+				}
+				System.out.println();
+			}
+		}
+	}
+
+	void printAllExperiments() {
+		System.out.println("\nAll Experiments\n");
+		for (int i = 0; i < constUWSN.SAMPLES_PER_TOUR; i++) {
+			for (int j = 0; j < 4; j++) {
+				System.out.print(String.format("%8.4f", constUWSN.allExperiments[i][j]) + "\t");
 			}
 			System.out.println();
+		}
+	}
+
+	void saveExperiment(final int ExperimentNumber) {
+		int index = 0;
+		for (int i = 0; i < constUWSN.TOUR_TYPES; i++) {
+			if (this.allTours.get(i).NameOfPlanner.contains("G_")) {
+				constUWSN.allExperiments[ExperimentNumber][index] = this.allTours
+						.get(ExperimentNumber * constUWSN.TOUR_TYPES + i).getVoIAccumulatedByTour();
+				index++;
+			}
 		}
 	}
 
